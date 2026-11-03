@@ -1,0 +1,6 @@
+subscription_id          = "00000000-0000-0000-0000-000000000000"
+location                 = "brazilsouth"
+resource_group_name      = "rg-tfstate-bootstrap-prod"
+storage_account_name     = "sttfstateabc123"
+container_name           = "tfstate"
+account_replication_type = "ZRS"
