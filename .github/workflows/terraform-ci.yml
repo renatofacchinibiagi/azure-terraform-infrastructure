@@ -1,0 +1,67 @@
+# Terraform CI
+#
+# Verifica automaticamente o código Terraform a cada pull request e a cada push na main.
+# O pipeline NÃO acessa o Azure e NÃO usa secrets: só lê o código (fmt + validate).
+# O plan e o apply continuam sendo executados manualmente, fora deste workflow.
+
+name: Terraform CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# Permissão mínima: o workflow apenas lê o repositório.
+permissions:
+  contents: read
+
+# Cancela execuções antigas da mesma branch/PR quando chega um commit novo.
+concurrency:
+  group: terraform-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  TF_IN_AUTOMATION: "true"
+
+jobs:
+  validate:
+    name: Validate (${{ matrix.dir }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      # Um job por diretório raiz do Terraform. Os módulos em modules/ são
+      # validados indiretamente, pois dev e prod os chamam.
+      matrix:
+        dir:
+          - bootstrap
+          - environments/dev
+          - environments/prod
+
+    defaults:
+      run:
+        working-directory: ${{ matrix.dir }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.9.8"
+          terraform_wrapper: false
+
+      # Falha se algum arquivo .tf não estiver no formato padrão do Terraform.
+      - name: Terraform fmt
+        run: terraform fmt -check -recursive -diff
+
+      # -backend=false: baixa os providers sem conectar ao state remoto (sem credenciais).
+      - name: Terraform init
+        run: terraform init -backend=false -input=false
+
+      # Confere sintaxe, tipos, referências entre módulos e as regras de validation.
+      - name: Terraform validate
+        run: terraform validate
