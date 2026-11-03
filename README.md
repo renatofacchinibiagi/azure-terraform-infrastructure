@@ -6,26 +6,28 @@ O objetivo é construir uma base clara e reutilizável, com módulos, ambientes 
 
 ## Status
 
-| Etapa | Situação |
-| --- | --- |
-| Bootstrap do backend remoto (Resource Group, Storage Account e container) | Concluída: aplicada no Azure, com o state migrado para o Blob Storage |
-| Módulos reutilizáveis (Resource Group e rede) | Planejada |
-| Ambientes `dev` e `prod` | Planejada |
-| Validações automatizadas com GitHub Actions | Planejada |
+| Etapa | Conteúdo | Situação |
+| --- | --- | --- |
+| 1 | Bootstrap do backend remoto (Resource Group, Storage Account e container) | Concluída: aplicada no Azure, com o state migrado para o Blob Storage |
+| 2 | Módulo `resource-group` + ambiente `dev` | Concluída: aplicada no Azure, com state em `dev/terraform.tfstate` |
+| 3 | Ambiente `prod` reaproveitando o mesmo módulo (mostra a reutilização) | Planejada |
+| 4 | Segundo módulo, por exemplo `network` (VNet e subnets), usado por dev e prod | Planejada |
+| 5 | GitHub Actions com `fmt` e `validate` em pull requests (e `plan` depois) | Planejada |
+| 6 | Ajustes finais no README, diagrama e melhorias de segurança (Shared Key etc.) | Planejada |
 
 ## Estrutura
 
 ```text
 .
 ├── bootstrap/        # Backend remoto do state (concluído)
-├── modules/          # Planejado: componentes reutilizáveis
-├── environments/     # Planejado: composição por ambiente (dev/prod)
+├── modules/          # Componentes reutilizáveis (resource-group concluído)
+├── environments/     # Composição por ambiente (dev concluído, prod planejado)
 ├── .github/          # Planejado: workflows de CI
 ├── .gitignore
 └── README.md
 ```
 
-Documentação do bootstrap: [bootstrap/readmebootstrap.md](./bootstrap/readmebootstrap.md).
+Documentação: [bootstrap](./bootstrap/readmebootstrap.md), [módulos](./modules/README.md) e [ambiente dev](./environments/dev/README.md).
 
 ## Como as partes se relacionam
 
@@ -36,7 +38,7 @@ Documentação do bootstrap: [bootstrap/readmebootstrap.md](./bootstrap/readmebo
 ```text
 Container tfstate
 ├── bootstrap/terraform.tfstate   (existe)
-├── dev/terraform.tfstate         (planejado)
+├── dev/terraform.tfstate         (existe)
 └── prod/terraform.tfstate        (planejado)
 ```
 
