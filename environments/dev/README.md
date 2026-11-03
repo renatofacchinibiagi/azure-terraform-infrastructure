@@ -7,7 +7,8 @@ Ambiente de desenvolvimento. Ele **usa** os módulos de [`modules/`](../../modul
 | Recurso | Nome | Origem |
 | --- | --- | --- |
 | Resource Group | `rg-<workload>-<environment>`, ou seja, `rg-portfolio-dev` | módulo [`resource-group`](../../modules/resource-group) |
-
+| VNet | `vnet-portfolio-dev`, faixa `10.10.0.0/16` | módulo [`network`](../../modules/network) |
+| Subnets | `snet-app` (`10.10.1.0/24`) e `snet-data` (`10.10.2.0/24`) | módulo [`network`](../../modules/network) |
 ## Arquivos
 
 | Arquivo | Função | Versionado |

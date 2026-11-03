@@ -10,8 +10,8 @@ O objetivo é construir uma base clara e reutilizável, com módulos, ambientes 
 | --- | --- | --- |
 | 1 | Bootstrap do backend remoto (Resource Group, Storage Account e container) | Concluída: aplicada no Azure, com o state migrado para o Blob Storage |
 | 2 | Módulo `resource-group` + ambiente `dev` | Concluída: aplicada no Azure, com state em `dev/terraform.tfstate` |
-| 3 | Ambiente `prod` reaproveitando o mesmo módulo (mostra a reutilização) | Planejada |
-| 4 | Segundo módulo, por exemplo `network` (VNet e subnets), usado por dev e prod | Planejada |
+| 3 | Ambiente `prod` reaproveitando o mesmo módulo (mostra a reutilização) | Concluída: aplicada no Azure, com state em `prod/terraform.tfstate` |
+| 4 | Segundo módulo, `network` (VNet e subnets), usado por dev e prod | Concluída: VNet e subnets aplicadas em dev e prod |
 | 5 | GitHub Actions com `fmt` e `validate` em pull requests (e `plan` depois) | Planejada |
 | 6 | Ajustes finais no README, diagrama e melhorias de segurança (Shared Key etc.) | Planejada |
 
@@ -20,14 +20,14 @@ O objetivo é construir uma base clara e reutilizável, com módulos, ambientes 
 ```text
 .
 ├── bootstrap/        # Backend remoto do state (concluído)
-├── modules/          # Componentes reutilizáveis (resource-group concluído)
-├── environments/     # Composição por ambiente (dev concluído, prod planejado)
+├── modules/          # Componentes reutilizáveis (resource-group e network)
+├── environments/     # Composição por ambiente (dev e prod concluídos)
 ├── .github/          # Planejado: workflows de CI
 ├── .gitignore
 └── README.md
 ```
 
-Documentação: [bootstrap](./bootstrap/readmebootstrap.md), [módulos](./modules/README.md) e [ambiente dev](./environments/dev/README.md).
+Documentação: [bootstrap](./bootstrap/readmebootstrap.md), [módulos](./modules/README.md), [ambiente dev](./environments/dev/README.md) e [ambiente prod](./environments/prod/README.md).
 
 ## Como as partes se relacionam
 
@@ -39,7 +39,7 @@ Documentação: [bootstrap](./bootstrap/readmebootstrap.md), [módulos](./module
 Container tfstate
 ├── bootstrap/terraform.tfstate   (existe)
 ├── dev/terraform.tfstate         (existe)
-└── prod/terraform.tfstate        (planejado)
+└── prod/terraform.tfstate        (existe)
 ```
 
 Os ambientes `dev` e `prod` já nascem com backend remoto e não precisam de migração. Somente o bootstrap passou por ela, porque cria o próprio armazenamento.

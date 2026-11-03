@@ -7,7 +7,8 @@ Ambiente de produção. Ele **usa** os mesmos módulos de [`modules/`](../../mod
 | Recurso | Nome | Origem |
 | --- | --- | --- |
 | Resource Group | `rg-<workload>-<environment>`, ou seja, `rg-portfolio-prod` | módulo [`resource-group`](../../modules/resource-group) |
-
+| VNet | `vnet-portfolio-prod`, faixa `10.20.0.0/16` | módulo [`network`](../../modules/network) |
+| Subnets | `snet-app` (`10.20.1.0/24`) e `snet-data` (`10.20.2.0/24`) | módulo [`network`](../../modules/network) |
 ## Arquivos
 
 | Arquivo | Função | Versionado |
